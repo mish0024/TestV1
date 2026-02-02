@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Royal Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #ffe6f2, #ffcce0);
+  overflow: hidden;
+  font-family: "Brush Script MT", cursive;
+}
+
+.container {
+  text-align: center;
+  animation: zoomIn 3s ease forwards;
+  opacity: 0;
+}
+
+@keyframes zoomIn {
+  to { opacity: 1; transform: scale(1); }
+  from { transform: scale(0.8); }
+}
+
+.scroll {
+  background: linear-gradient(#fff8e7, #ffe9c9);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 50px gold;
+  max-width: 600px;
+  font-size: 30px;
+  line-height: 1.5;
+  color: #6b2d00;
+  position: relative;
+}
+
+.crown {
+  font-size: 60px;
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: dropCrown 2s ease forwards;
+}
+
+@keyframes dropCrown {
+  0% { top: -150px; }
+  80% { top: -10px; }
+  100% { top: -20px; }
+}
+
+.highlight {
+  color: #c4005a;
+  font-size: 36px;
+  text-shadow: 0 0 15px #ff66a3;
+}
+
+.sparkle {
+  position: fixed;
+  font-size: 20px;
+  animation: sparkleFloat 4s linear forwards;
+}
+
+@keyframes sparkleFloat {
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4db1.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+  <div class="scroll">
+    <div class="crown">👑</div>
+    Hear ye, hear ye…<br>
+    The royal heart chooses only one.<br>
+    <span class="highlight">My Baby S ❤️</span><br>
+    is forever my Valentine.
+  </div>
+</div>
+
+<script>
+function sparkles() {
+  for (let i = 0; i < 25; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.innerHTML = "✨";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.bottom = "-20px";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 4000);
+  }
+}
+setInterval(sparkles, 800);
+</script>
+
+</body>
+</html>
