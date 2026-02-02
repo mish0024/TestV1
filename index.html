@@ -7,112 +7,127 @@
 
 <style>
 body {
-  margin: 0;
+  margin:0;
+  background: radial-gradient(circle,#ffd6e7,#ffeef6);
+  overflow:hidden;
   font-family: system-ui, sans-serif;
-  background: radial-gradient(circle, #ffd6e7, #ffeef6);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* CARD */
-.card {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 15px 40px rgba(0,0,0,.15);
-  width: 90%;
-  max-width: 500px;
+/* envelope intro */
+
+.intro {
+  text-align:center;
 }
+
+.envelope {
+  font-size:80px;
+  cursor:pointer;
+  animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  50% { transform:translateY(-10px); }
+}
+
+/* card */
+
+.card {
+  display:none;
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,.15);
+  width:90%;
+  max-width:500px;
+}
+
+.zone { position:relative; height:150px; margin-top:20px; }
 
 button {
-  padding: 14px 24px;
-  font-size: 18px;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  position: absolute;
+  padding:14px 24px;
+  font-size:18px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+  position:absolute;
 }
 
-#yesBtn {
-  background: #ff3b7a;
-  color: white;
-  left: 25%;
-}
+#yesBtn { background:#ff3b7a; color:white; left:25%; }
+#noBtn { background:#ddd; left:60%; }
 
-#noBtn {
-  background: #ddd;
-  left: 60%;
-}
-
-.zone {
-  position: relative;
-  height: 150px;
-  margin-top: 20px;
-}
-
-/* ROYAL SCENE */
+/* royal ending */
 
 .royal {
-  display: none;
-  text-align: center;
-  animation: zoom 3s ease forwards;
-  font-family: "Brush Script MT", cursive;
+  display:none;
+  text-align:center;
+  animation:zoom 3s ease forwards;
+  font-family:"Brush Script MT",cursive;
 }
 
 @keyframes zoom {
-  from { opacity: 0; transform: scale(.8); }
-  to { opacity: 1; transform: scale(1); }
+  from{opacity:0;transform:scale(.8);}
+  to{opacity:1;transform:scale(1);}
 }
 
 .scroll {
-  background: linear-gradient(#fff8e7, #ffe9c9);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 0 50px gold;
-  font-size: 30px;
-  line-height: 1.5;
-  color: #6b2d00;
-  position: relative;
+  background:linear-gradient(#fff8e7,#ffe9c9);
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 0 50px gold;
+  font-size:30px;
+  color:#6b2d00;
+  position:relative;
 }
 
 .crown {
-  font-size: 60px;
-  position: absolute;
-  top: -120px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: crownDrop 2s ease forwards;
+  font-size:60px;
+  position:absolute;
+  top:-200px;
+  left:50%;
+  transform:translateX(-50%);
+  animation:crownDrop 2s forwards;
 }
 
 @keyframes crownDrop {
-  0% { top: -200px; }
-  100% { top: -20px; }
+  to { top:-20px; }
 }
 
 .highlight {
-  color: #c4005a;
-  font-size: 36px;
-  text-shadow: 0 0 15px #ff66a3;
+  color:#c4005a;
+  font-size:36px;
+  text-shadow:0 0 15px #ff66a3;
 }
 
-/* roses */
+/* roses slower */
+
 .rose {
-  position: fixed;
-  top: -20px;
-  font-size: 24px;
-  animation: fall 6s linear forwards;
+  position:fixed;
+  top:-20px;
+  font-size:26px;
+  animation:fall 10s linear forwards;
 }
 
 @keyframes fall {
-  to {
-    transform: translateY(110vh);
-    opacity: 0;
-  }
+  to { transform:translateY(110vh); opacity:0; }
+}
+
+/* glitter */
+
+.glitter {
+  position:fixed;
+  pointer-events:none;
+  font-size:14px;
+  animation:fade 1s forwards;
+}
+
+@keyframes fade {
+  to { opacity:0; transform:scale(2); }
 }
 </style>
 </head>
@@ -123,9 +138,14 @@ button {
 <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4db1.mp3">
 </audio>
 
+<div class="intro" id="intro">
+  <h2>A message has arrived 💌</h2>
+  <div class="envelope" onclick="openIntro()">✉️</div>
+</div>
+
 <div class="card" id="game">
-  <h2>Will you be my Valentine😍💞💓</h2>
-  <h2>You can't say no 😈</h2>
+  <h2>Will you be my Valentine? 😍💞</h2>
+  <p>You can't say no 😈</p>
   <div class="zone" id="zone">
     <button id="yesBtn">Yes</button>
     <button id="noBtn">No</button>
@@ -142,44 +162,67 @@ button {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
 <script>
-const yes = document.getElementById("yesBtn");
-const no = document.getElementById("noBtn");
-const zone = document.getElementById("zone");
-const game = document.getElementById("game");
-const royal = document.getElementById("royal");
-const music = document.getElementById("music");
+const yes=document.getElementById("yesBtn");
+const no=document.getElementById("noBtn");
+const zone=document.getElementById("zone");
+const game=document.getElementById("game");
+const royal=document.getElementById("royal");
+const intro=document.getElementById("intro");
+const music=document.getElementById("music");
 
-let scale = 1;
+let scale=1;
 
-zone.addEventListener("pointermove", e => {
-  const r = no.getBoundingClientRect();
-  const d = Math.hypot(r.x - e.clientX, r.y - e.clientY);
-  if (d < 120) {
-    no.style.left = Math.random()*80 + "%";
-    no.style.top = Math.random()*80 + "%";
-    scale += .1;
-    yes.style.transform = `scale(${scale})`;
-  }
+function openIntro(){
+ intro.style.display="none";
+ game.style.display="block";
+}
+
+zone.addEventListener("pointermove",e=>{
+ const r=no.getBoundingClientRect();
+ const d=Math.hypot(r.x-e.clientX,r.y-e.clientY);
+ if(d<120){
+  no.style.left=Math.random()*80+"%";
+  no.style.top=Math.random()*80+"%";
+  scale+=.1;
+  yes.style.transform=`scale(${scale})`;
+ }
 });
 
-yes.onclick = () => {
-  game.style.display = "none";
-  royal.style.display = "block";
-  music.play();
-  roses();
+yes.onclick=()=>{
+ game.style.display="none";
+ royal.style.display="block";
+ music.play();
+ roses();
+ fireworks();
 };
 
 function roses(){
-  setInterval(()=>{
-    const r=document.createElement("div");
-    r.className="rose";
-    r.innerHTML="🌹";
-    r.style.left=Math.random()*100+"vw";
-    document.body.appendChild(r);
-    setTimeout(()=>r.remove(),6000);
-  },300);
+ setInterval(()=>{
+  const r=document.createElement("div");
+  r.className="rose";
+  r.innerHTML="🌹";
+  r.style.left=Math.random()*100+"vw";
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(),10000);
+ },600);
 }
+
+function fireworks(){
+ confetti({particleCount:200,spread:120,origin:{y:0.6}});
+}
+
+document.addEventListener("mousemove",e=>{
+ const g=document.createElement("div");
+ g.className="glitter";
+ g.innerHTML="✨";
+ g.style.left=e.clientX+"px";
+ g.style.top=e.clientY+"px";
+ document.body.appendChild(g);
+ setTimeout(()=>g.remove(),1000);
+});
 </script>
 
 </body>
