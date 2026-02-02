@@ -10,59 +10,53 @@ body {
   margin:0;
   background: radial-gradient(circle,#ffd6e7,#ffeef6);
   overflow:hidden;
-  font-family: 'Brush Script MT', cursive;
+  font-family: system-ui, sans-serif;
   height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  perspective:1000px;
 }
 
 /* envelope intro */
 .intro {
   text-align:center;
-  animation:fadeIn 2s ease forwards;
 }
 .envelope {
   font-size:80px;
   cursor:pointer;
   animation:bounce 1.5s infinite;
 }
-
 @keyframes bounce { 50% { transform:translateY(-10px); } }
-@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
 /* card */
 .card {
   display:none;
-  background:rgba(255,255,255,0.95);
-  padding:40px;
-  border-radius:25px;
+  background:white;
+  padding:30px;
+  border-radius:20px;
   text-align:center;
-  box-shadow:0 15px 60px rgba(0,0,0,.25);
+  box-shadow:0 15px 40px rgba(0,0,0,.15);
   width:90%;
-  max-width:550px;
-  transform:scale(0.8);
-  animation:cardPop 0.8s forwards;
+  max-width:500px;
 }
-@keyframes cardPop { to { transform:scale(1); } }
+.card h1 { font-size:28px; margin-bottom:10px; }
 
-.card h1 { font-size:32px; letter-spacing:2px; margin-bottom:15px; }
-
-.zone { position:relative; height:150px; margin-top:30px; }
+.zone { position:relative; height:150px; margin-top:20px; }
 
 button {
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  padding:16px 28px;
-  font-size:20px;
+  padding:14px 24px;
+  font-size:18px;
   border-radius:999px;
   border:none;
   cursor:pointer;
   font-weight:bold;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
 }
+#yesBtn { background:#ff3b7a; color:white; left:25%; }
+#noBtn { background:#ddd; color:black; left:60%; }
 
 /* royal ending */
 .royal {
@@ -76,33 +70,28 @@ button {
 
 .scroll {
   background:linear-gradient(#fff8e7,#ffe9c9);
-  padding:50px;
-  border-radius:25px;
-  box-shadow:0 0 80px gold;
-  font-size:32px;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 0 50px gold;
+  font-size:30px;
   color:#6b2d00;
   position:relative;
-  transform:rotateX(90deg);
-  animation:scrollDrop 1s forwards;
 }
-@keyframes scrollDrop { to { transform:rotateX(0deg); } }
-
-.crown { font-size:70px; position:absolute; top:-250px; left:50%; transform:translateX(-50%); animation:crownDrop 2s forwards; }
+.crown { font-size:60px; position:absolute; top:-200px; left:50%; transform:translateX(-50%); animation:crownDrop 2s forwards; }
 @keyframes crownDrop { to { top:-20px; } }
 
-.highlight { color:#c4005a; font-size:40px; text-shadow:0 0 20px #ff66a3; animation:heartBeat 1.2s infinite; }
-@keyframes heartBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-
-/* handwriting effect */
-#loveLetter { font-size:28px; margin-top:20px; white-space:pre-wrap; min-height:120px; }
+.highlight { color:#c4005a; font-size:36px; text-shadow:0 0 15px #ff66a3; }
 
 /* roses falling */
-.rose { position:fixed; top:-20px; font-size:28px; animation:fall 12s linear forwards; }
-@keyframes fall { to { transform:translateY(110vh) rotate(360deg); opacity:0; } }
+.rose { position:fixed; top:-20px; font-size:26px; animation:fall 10s linear forwards; }
+@keyframes fall { to { transform:translateY(110vh); opacity:0; } }
 
-/* glitter */
-.glitter { position:fixed; pointer-events:none; font-size:16px; animation:fade 1s forwards; }
+/* glitter trail */
+.glitter { position:fixed; pointer-events:none; font-size:14px; animation:fade 1s forwards; }
 @keyframes fade { to { opacity:0; transform:scale(2); } }
+
+/* handwritten love letter */
+#loveLetter { font-size:28px; white-space:pre-wrap; min-height:120px; margin-top:20px; }
 
 /* mobile responsiveness */
 @media screen and (max-width:400px){
@@ -121,7 +110,7 @@ button {
 </audio>
 
 <div class="intro" id="intro">
-  <h2 style="font-size:28px; margin-bottom:20px;">A special message from your HUSBAND 💌</h2>
+  <h2>A message has arrived from your HUSBAND 💌</h2>
   <div class="envelope" onclick="openIntro()">✉️</div>
 </div>
 
@@ -173,39 +162,30 @@ function openIntro(){
   music.play();
 }
 
-// YES BUTTON grows slowly
+// YES button grows slowly
 function growYes() {
-  yesScale = Math.min(2, yesScale + 0.03); // slow increment
+  yesScale = Math.min(1.2, yesScale + 0.01); // slow, gentle growth
   yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
 }
 
-// NO BUTTON dodging
+// NO button dodging
 function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-function moveNo(px,py){
-  const z=zone.getBoundingClientRect();
-  const b=noBtn.getBoundingClientRect();
-  let dx=(b.left+b.width/2)-px, dy=(b.top+b.height/2)-py, mag=Math.hypot(dx,dy)||1;
-  dx/=mag; dy/=mag;
-  let newLeft=clamp((b.left-z.left)+dx*150,0,z.width-b.width);
-  let newTop=clamp((b.top-z.top)+dy*150,0,z.height-b.height);
-  noBtn.style.left=newLeft+"px";
-  noBtn.style.top=newTop+"px";
-  noBtn.style.transform="none";
-  growYes();
-}
-
-zone.addEventListener("pointermove",e=>{
-  const b=noBtn.getBoundingClientRect();
-  const d=Math.hypot((b.left+b.width/2)-e.clientX,(b.top+b.height/2)-e.clientY);
-  if(d<140) moveNo(e.clientX,e.clientY);
+zone.addEventListener("pointermove", e=>{
+  const r=noBtn.getBoundingClientRect();
+  const d=Math.hypot((r.x + r.width/2)-e.clientX, (r.y + r.height/2)-e.clientY);
+  if(d<120){
+    noBtn.style.left = Math.random()*80+"%";
+    noBtn.style.top = Math.random()*80+"%";
+    growYes();
+  }
 });
 
 noBtn.addEventListener("click", e=>e.preventDefault());
 
 // YES CLICK
-yesBtn.addEventListener("click",()=>{
+yesBtn.addEventListener("click", ()=>{
   zone.style.display="none";
-  game.querySelector("p").style.display="none"; // hide “You can't say no” text
+  game.querySelector("p").style.display="none"; // hide "You can't say no"
   royal.style.display="block";
   typeLetter(message,loveLetter,60);
   roses();
@@ -231,7 +211,7 @@ function fireworks(){
 }
 
 // glitter trail
-document.addEventListener("mousemove",e=>{
+document.addEventListener("mousemove", e=>{
   const g=document.createElement("div");
   g.className="glitter";
   g.innerHTML="✨";
