@@ -160,25 +160,38 @@ function openIntro(){
   music.play();
 }
 
-/* -------- YES BUTTON GROWING WITHOUT CAP -------- */
+/* -------- YES BUTTON GROWS WITHOUT CAP -------- */
 function growYes() {
-  yesScale += 0.1; // keeps growing every dodge
+  yesScale += 0.2; // grows every time No moves
   yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
 }
 
 /* -------- NO BUTTON DODGING -------- */
 function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-zone.addEventListener("pointermove",e=>{
- const r=no.getBoundingClientRect();
- const d=Math.hypot(r.x-e.clientX,r.y-e.clientY);
- if(d<120){
-  no.style.left=Math.random()*80+"%";
-  no.style.top=Math.random()*80+"%";
-  scale+=.1;
-  yes.style.transform=`scale(${scale})`;
- }
+
+zone.addEventListener("pointermove", e => {
+  const rect = noBtn.getBoundingClientRect();
+  const d = Math.hypot(
+    (rect.left + rect.width/2) - e.clientX,
+    (rect.top + rect.height/2) - e.clientY
+  );
+
+  if(d < 120){
+    // Move No button randomly within zone
+    const zoneRect = zone.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+    let newLeft = Math.random() * (zoneRect.width - btnRect.width);
+    let newTop  = Math.random() * (zoneRect.height - btnRect.height);
+
+    noBtn.style.left = newLeft + "px";
+    noBtn.style.top  = newTop + "px";
+
+    // Grow Yes button gradually WITHOUT any cap
+    growYes();
+  }
 });
-noBtn.addEventListener("click", e=>e.preventDefault());
+
+noBtn.addEventListener("click", e => e.preventDefault());
 
 // YES CLICK
 yesBtn.addEventListener("click", ()=>{
