@@ -239,16 +239,17 @@ function openIntro(){
 }
 
 // No button moves away
-zone.addEventListener("pointermove",e=>{
- const r=no.getBoundingClientRect();
- const d=Math.hypot(r.x-e.clientX,r.y-e.clientY);
- if(d<120){
-  no.style.left=Math.random()*80+"%";
-  no.style.top=Math.random()*80+"%";
-  scale+=.1;
-  yes.style.transform=`scale(${scale})`;
+zone.addEventListener("pointermove", e => {
+ const r = no.getBoundingClientRect();
+ const d = Math.hypot(r.x - e.clientX, r.y - e.clientY);
+ if(d < 120){
+  no.style.left = Math.random() * 80 + "%";
+  no.style.top = Math.random() * 80 + "%";
+  scale += 0.03; // slower growth
+  yes.style.transform = `scale(${scale})`;
  }
 });
+
 
 // Yes button triggers royal scroll + handwriting
 yes.onclick=()=>{
