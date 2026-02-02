@@ -1,4 +1,4 @@
-😍💞💓<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -144,16 +144,16 @@ button {
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script>
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
-const zone=document.getElementById("zone");
-const game=document.getElementById("game");
-const royal=document.getElementById("royal");
-const intro=document.getElementById("intro");
-const music=document.getElementById("music");
-const loveLetter=document.getElementById("loveLetter");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const zone = document.getElementById("zone");
+const game = document.getElementById("game");
+const royal = document.getElementById("royal");
+const intro = document.getElementById("intro");
+const music = document.getElementById("music");
+const loveLetter = document.getElementById("loveLetter");
 
-let yesScale=1;
+let yesScale = 1;
 const message = `Hear ye, hear ye…
 The royal heart chooses only one.
 My Baby S ❤️
@@ -162,7 +162,11 @@ is forever my Valentine.`;
 function typeLetter(text, element, speed=60){
   let i=0;
   function typing(){
-    if(i<text.length){ element.textContent += text.charAt(i); i++; setTimeout(typing,speed); }
+    if(i<text.length){ 
+      element.textContent += text.charAt(i); 
+      i++; 
+      setTimeout(typing,speed); 
+    }
   }
   typing();
 }
@@ -173,41 +177,56 @@ function openIntro(){
   music.play();
 }
 
-// YES BUTTON grows slowly
-function growYes() {
-  yesScale = Math.min(2, yesScale + 0.03); // slow increment
+// clamp function
+function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
+
+// NO BUTTON dodging + YES growth cumulatively
+function moveNo(px, py){
+  const z = zone.getBoundingClientRect();
+  const b = noBtn.getBoundingClientRect();
+
+  let dx = (b.left + b.width / 2) - px,
+      dy = (b.top + b.height / 2) - py,
+      mag = Math.hypot(dx, dy) || 1;
+  dx /= mag; dy /= mag;
+
+  let newLeft = clamp((b.left - z.left) + dx * 150, 0, z.width - b.width);
+  let newTop = clamp((b.top - z.top) + dy * 150, 0, z.height - b.height);
+  noBtn.style.left = newLeft + "px";
+  noBtn.style.top = newTop + "px";
+  noBtn.style.transform = "none";
+
+  // YES button grows a little on every dodge attempt
+  yesScale += 0.05; 
   yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
+
+  // Fill screen if too big
+  if(yesScale >= 8){
+    yesBtn.style.width = "100vw";
+    yesBtn.style.height = "100vh";
+    yesBtn.style.fontSize = "100px";
+    yesBtn.style.left = "0";
+    yesBtn.style.top = "0";
+    yesBtn.style.transform = "none";
+  }
 }
 
-// NO BUTTON dodging
-function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-function moveNo(px,py){
-  const z=zone.getBoundingClientRect();
-  const b=noBtn.getBoundingClientRect();
-  let dx=(b.left+b.width/2)-px, dy=(b.top+b.height/2)-py, mag=Math.hypot(dx,dy)||1;
-  dx/=mag; dy/=mag;
-  let newLeft=clamp((b.left-z.left)+dx*150,0,z.width-b.width);
-  let newTop=clamp((b.top-z.top)+dy*150,0,z.height-b.height);
-  noBtn.style.left=newLeft+"px";
-  noBtn.style.top=newTop+"px";
-  noBtn.style.transform="none";
-  growYes();
-}
-
-zone.addEventListener("pointermove",e=>{
-  const b=noBtn.getBoundingClientRect();
-  const d=Math.hypot((b.left+b.width/2)-e.clientX,(b.top+b.height/2)-e.clientY);
-  if(d<140) moveNo(e.clientX,e.clientY);
+// track pointer hover
+zone.addEventListener("pointermove", e=>{
+  const b = noBtn.getBoundingClientRect();
+  const d = Math.hypot((b.left + b.width / 2) - e.clientX, (b.top + b.height / 2) - e.clientY);
+  if(d < 140) moveNo(e.clientX, e.clientY);
 });
 
-noBtn.addEventListener("click", e=>e.preventDefault());
+// prevent NO click
+noBtn.addEventListener("click", e=> e.preventDefault());
 
-// YES CLICK
-yesBtn.addEventListener("click",()=>{
+// YES click
+yesBtn.addEventListener("click", ()=>{
   zone.style.display="none";
-  game.querySelector("p").style.display="none"; // hide “You can't say no” text
+  game.querySelector("p").style.display="none";
   royal.style.display="block";
-  typeLetter(message,loveLetter,60);
+  typeLetter(message, loveLetter, 60);
   roses();
   fireworks();
   music.play();
@@ -216,10 +235,10 @@ yesBtn.addEventListener("click",()=>{
 // falling roses
 function roses(){
   setInterval(()=>{
-    const r=document.createElement("div");
-    r.className="rose";
-    r.innerHTML="🌹";
-    r.style.left=Math.random()*100+"vw";
+    const r = document.createElement("div");
+    r.className = "rose";
+    r.innerHTML = "🌹";
+    r.style.left = Math.random()*100+"vw";
     document.body.appendChild(r);
     setTimeout(()=>r.remove(),12000);
   },600);
@@ -231,12 +250,12 @@ function fireworks(){
 }
 
 // glitter trail
-document.addEventListener("mousemove",e=>{
-  const g=document.createElement("div");
+document.addEventListener("mousemove", e=>{
+  const g = document.createElement("div");
   g.className="glitter";
   g.innerHTML="✨";
-  g.style.left=e.clientX+"px";
-  g.style.top=e.clientY+"px";
+  g.style.left = e.clientX + "px";
+  g.style.top = e.clientY + "px";
   document.body.appendChild(g);
   setTimeout(()=>g.remove(),1000);
 });
