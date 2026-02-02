@@ -2,30 +2,71 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Royal Valentine</title>
+<title>Valentine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body {
   margin: 0;
-  height: 100vh;
+  font-family: system-ui, sans-serif;
+  background: radial-gradient(circle, #ffd6e7, #ffeef6);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle, #ffe6f2, #ffcce0);
-  overflow: hidden;
+  height: 100vh;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,.15);
+  width: 90%;
+  max-width: 500px;
+}
+
+button {
+  padding: 14px 24px;
+  font-size: 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  position: absolute;
+}
+
+#yesBtn {
+  background: #ff3b7a;
+  color: white;
+  left: 25%;
+}
+
+#noBtn {
+  background: #ddd;
+  left: 60%;
+}
+
+.zone {
+  position: relative;
+  height: 150px;
+  margin-top: 20px;
+}
+
+/* ROYAL SCENE */
+
+.royal {
+  display: none;
+  text-align: center;
+  animation: zoom 3s ease forwards;
   font-family: "Brush Script MT", cursive;
 }
 
-.container {
-  text-align: center;
-  animation: zoomIn 3s ease forwards;
-  opacity: 0;
-}
-
-@keyframes zoomIn {
+@keyframes zoom {
+  from { opacity: 0; transform: scale(.8); }
   to { opacity: 1; transform: scale(1); }
-  from { transform: scale(0.8); }
 }
 
 .scroll {
@@ -33,7 +74,6 @@ body {
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 0 50px gold;
-  max-width: 600px;
   font-size: 30px;
   line-height: 1.5;
   color: #6b2d00;
@@ -43,15 +83,14 @@ body {
 .crown {
   font-size: 60px;
   position: absolute;
-  top: -80px;
+  top: -120px;
   left: 50%;
   transform: translateX(-50%);
-  animation: dropCrown 2s ease forwards;
+  animation: crownDrop 2s ease forwards;
 }
 
-@keyframes dropCrown {
-  0% { top: -150px; }
-  80% { top: -10px; }
+@keyframes crownDrop {
+  0% { top: -200px; }
   100% { top: -20px; }
 }
 
@@ -61,25 +100,38 @@ body {
   text-shadow: 0 0 15px #ff66a3;
 }
 
-.sparkle {
+/* roses */
+.rose {
   position: fixed;
-  font-size: 20px;
-  animation: sparkleFloat 4s linear forwards;
+  top: -20px;
+  font-size: 24px;
+  animation: fall 6s linear forwards;
 }
 
-@keyframes sparkleFloat {
-  to { transform: translateY(-100vh); opacity: 0; }
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<audio autoplay loop>
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4db1.mp3" type="audio/mpeg">
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4db1.mp3">
 </audio>
 
-<div class="container">
+<div class="card" id="game">
+  <h2>You can't say no 😈</h2>
+  <div class="zone" id="zone">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+</div>
+
+<div class="royal" id="royal">
   <div class="scroll">
     <div class="crown">👑</div>
     Hear ye, hear ye…<br>
@@ -90,18 +142,43 @@ body {
 </div>
 
 <script>
-function sparkles() {
-  for (let i = 0; i < 25; i++) {
-    const s = document.createElement("div");
-    s.className = "sparkle";
-    s.innerHTML = "✨";
-    s.style.left = Math.random() * 100 + "vw";
-    s.style.bottom = "-20px";
-    document.body.appendChild(s);
-    setTimeout(() => s.remove(), 4000);
+const yes = document.getElementById("yesBtn");
+const no = document.getElementById("noBtn");
+const zone = document.getElementById("zone");
+const game = document.getElementById("game");
+const royal = document.getElementById("royal");
+const music = document.getElementById("music");
+
+let scale = 1;
+
+zone.addEventListener("pointermove", e => {
+  const r = no.getBoundingClientRect();
+  const d = Math.hypot(r.x - e.clientX, r.y - e.clientY);
+  if (d < 120) {
+    no.style.left = Math.random()*80 + "%";
+    no.style.top = Math.random()*80 + "%";
+    scale += .1;
+    yes.style.transform = `scale(${scale})`;
   }
+});
+
+yes.onclick = () => {
+  game.style.display = "none";
+  royal.style.display = "block";
+  music.play();
+  roses();
+};
+
+function roses(){
+  setInterval(()=>{
+    const r=document.createElement("div");
+    r.className="rose";
+    r.innerHTML="🌹";
+    r.style.left=Math.random()*100+"vw";
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(),6000);
+  },300);
 }
-setInterval(sparkles, 800);
 </script>
 
 </body>
