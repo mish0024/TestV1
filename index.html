@@ -114,3 +114,110 @@ button {
 
 <div class="card" id="game">
   <h1>Will you be my Valentine? 😍💞</h1>
+  <p style="margin-bottom:20px;">You can't say no 😈</p>
+
+  <div class="zone" id="zone">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+</div>
+
+<div class="royal" id="royal">
+  <div class="scroll">
+    <div class="crown">👑</div>
+    <div id="loveLetter"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const zone = document.getElementById("zone");
+const game = document.getElementById("game");
+const royal = document.getElementById("royal");
+const intro = document.getElementById("intro");
+const music = document.getElementById("music");
+const loveLetter = document.getElementById("loveLetter");
+
+let yesScale = 1;
+const message = `Hear ye, hear ye…
+The royal heart chooses only one.
+My Baby S ❤️
+is forever my Valentine.`;
+
+function typeLetter(text, element, speed=60){
+  let i=0;
+  function typing(){
+    if(i<text.length){ element.textContent += text.charAt(i); i++; setTimeout(typing,speed); }
+  }
+  typing();
+}
+
+function openIntro(){
+  intro.style.display="none";
+  game.style.display="block";
+  music.play();
+}
+
+/* -------- YES BUTTON GROWING WITHOUT CAP -------- */
+function growYes() {
+  yesScale += 0.05; // keeps growing every dodge
+  yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
+}
+
+/* -------- NO BUTTON DODGING -------- */
+function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+zone.addEventListener("pointermove", e=>{
+  const r = noBtn.getBoundingClientRect();
+  const d = Math.hypot((r.x + r.width/2)-e.clientX, (r.y + r.height/2)-e.clientY);
+  if(d<120){
+    noBtn.style.left = Math.random()*80 + "%";
+    noBtn.style.top = Math.random()*80 + "%";
+    growYes(); // yes button grows every dodge, unlimited
+  }
+});
+
+noBtn.addEventListener("click", e=>e.preventDefault());
+
+// YES CLICK
+yesBtn.addEventListener("click", ()=>{
+  zone.style.display="none";
+  game.querySelector("p").style.display="none"; // hide "You can't say no"
+  royal.style.display="block";
+  typeLetter(message,loveLetter,60);
+  roses();
+  fireworks();
+  music.play();
+});
+
+// falling roses
+function roses(){
+  setInterval(()=>{
+    const r=document.createElement("div");
+    r.className="rose";
+    r.innerHTML="🌹";
+    r.style.left=Math.random()*100+"vw";
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(),12000);
+  },600);
+}
+
+// fireworks
+function fireworks(){
+  confetti({particleCount:300,spread:160,origin:{y:0.6}});
+}
+
+// glitter trail
+document.addEventListener("mousemove", e=>{
+  const g=document.createElement("div");
+  g.className="glitter";
+  g.innerHTML="✨";
+  g.style.left=e.clientX+"px";
+  g.style.top=e.clientY+"px";
+  document.body.appendChild(g);
+  setTimeout(()=>g.remove(),1000);
+});
+</script>
+</body>
+</html>
