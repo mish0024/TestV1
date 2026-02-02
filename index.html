@@ -168,16 +168,16 @@ function growYes() {
 
 /* -------- NO BUTTON DODGING -------- */
 function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-zone.addEventListener("pointermove", e => {
-  // Move No button randomly every time pointer moves
-  noBtn.style.left = Math.random() * 80 + "%";
-  noBtn.style.top = Math.random() * 80 + "%";
-
-  // Grow Yes button much faster (4x bigger)
-  yesScale += 0.2; 
-  yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
+zone.addEventListener("pointermove",e=>{
+ const r=no.getBoundingClientRect();
+ const d=Math.hypot(r.x-e.clientX,r.y-e.clientY);
+ if(d<120){
+  no.style.left=Math.random()*80+"%";
+  no.style.top=Math.random()*80+"%";
+  scale+=.1;
+  yes.style.transform=`scale(${scale})`;
+ }
 });
-
 noBtn.addEventListener("click", e=>e.preventDefault());
 
 // YES CLICK
