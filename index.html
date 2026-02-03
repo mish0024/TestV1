@@ -1,228 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Valentine</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Will You Be My Valentine?</title>
+
+<!-- Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
 <style>
+:root {
+  --pink1:#ff4d88;
+  --pink2:#ff85a2;
+  --bg1:#ffd6e7;
+  --bg2:#fff0f6;
+}
+
+* { box-sizing: border-box; }
+
 body {
   margin:0;
-  background: radial-gradient(circle,#ffd6e7,#ffeef6);
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background: radial-gradient(circle at top,var(--bg2),var(--bg1));
+  font-family: "Poppins", system-ui, sans-serif;
   overflow:hidden;
-  font-family: system-ui, sans-serif;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
-/* envelope intro */
-
-.intro {
-  text-align:center;
+/* Floating hearts */
+.heart {
+  position:absolute;
+  bottom:-20px;
+  font-size:20px;
+  animation: floatUp linear infinite;
+  opacity:.7;
+}
+@keyframes floatUp {
+  to {
+    transform: translateY(-120vh) rotate(360deg);
+    opacity:0;
+  }
 }
 
-.envelope {
-  font-size:80px;
-  cursor:pointer;
-  animation:bounce 1.5s infinite;
+/* Confetti canvas */
+#confetti {
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:10;
 }
 
-@keyframes bounce {
-  50% { transform:translateY(-10px); }
-}
-
-/* card */
-
+/* Card */
 .card {
-  display:none;
-  background:white;
-  padding:30px;
-  border-radius:20px;
+  position:relative;
+  background:#ffffffcc;
+  backdrop-filter: blur(12px);
+  padding:32px 24px;
+  border-radius:26px;
   text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,.15);
-  width:90%;
-  max-width:500px;
+  width:min(720px,92vw);
+  box-shadow:0 20px 70px rgba(0,0,0,.2);
+  z-index:2;
 }
 
-.zone { position:relative; height:150px; margin-top:20px; }
+/* Animated title */
+h1 {
+  font-size:clamp(28px,4vw,48px);
+  margin-bottom:22px;
+  background: linear-gradient(90deg,var(--pink1),var(--pink2),var(--pink1));
+  background-size:200%;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+  to { background-position:200%; }
+}
+
+.buttons {
+  position:relative;
+  height:160px;
+  max-width:520px;
+  margin:0 auto;
+}
 
 button {
-  padding:14px 24px;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  padding:16px 30px;
   font-size:18px;
+  font-weight:800;
   border-radius:999px;
   border:none;
   cursor:pointer;
-  font-weight:bold;
-  position:absolute;
+  box-shadow:0 12px 28px rgba(0,0,0,.18);
+  transition:.15s ease;
 }
 
-#yesBtn { background:#ff3b7a; color:white; left:25%; }
-#noBtn { background:#ddd; left:60%; }
+#yes {
+  left:15%;
+  background:var(--pink1);
+  color:#fff;
+}
 
-/* royal ending */
+#yes:hover { transform:translateY(-50%) scale(1.08); }
 
-.royal {
+#no {
+  left:60%;
+  background:#e5e7eb;
+}
+
+.hint {
+  font-size:13px;
+  opacity:.65;
+  margin-top:8px;
+}
+
+/* Result */
+.result {
   display:none;
-  text-align:center;
-  animation:zoom 3s ease forwards;
-  font-family:"Brush Script MT",cursive;
+  margin-top:20px;
+  animation: pop .4s ease;
 }
 
-@keyframes zoom {
-  from{opacity:0;transform:scale(.8);}
-  to{opacity:1;transform:scale(1);}
+@keyframes pop {
+  from { transform:scale(.9); opacity:0; }
+  to { transform:scale(1); opacity:1; }
 }
 
-.scroll {
-  background:linear-gradient(#fff8e7,#ffe9c9);
-  padding:40px;
-  border-radius:20px;
-  box-shadow:0 0 50px gold;
-  font-size:30px;
-  color:#6b2d00;
-  position:relative;
+.result h2 {
+  font-size:clamp(32px,4vw,52px);
+  color:var(--pink1);
+  margin-bottom:10px;
 }
 
-.crown {
-  font-size:60px;
-  position:absolute;
-  top:-200px;
-  left:50%;
-  transform:translateX(-50%);
-  animation:crownDrop 2s forwards;
+.result p {
+  font-size:18px;
 }
 
-@keyframes crownDrop {
-  to { top:-20px; }
+.glow {
+  animation: glow 1.5s infinite alternate;
 }
-
-.highlight {
-  color:#c4005a;
-  font-size:36px;
-  text-shadow:0 0 15px #ff66a3;
-}
-
-/* roses slower */
-
-.rose {
-  position:fixed;
-  top:-20px;
-  font-size:26px;
-  animation:fall 10s linear forwards;
-}
-
-@keyframes fall {
-  to { transform:translateY(110vh); opacity:0; }
-}
-
-/* glitter */
-
-.glitter {
-  position:fixed;
-  pointer-events:none;
-  font-size:14px;
-  animation:fade 1s forwards;
-}
-
-@keyframes fade {
-  to { opacity:0; transform:scale(2); }
+@keyframes glow {
+  to { text-shadow:0 0 25px #ff4d88; }
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="confetti"></canvas>
+
+<div class="card">
+  <h1>Nirali, will you be my Valentine? 💖</h1>
+
+  <div class="buttons" id="zone">
+    <button id="yes">YES 💕</button>
+    <button id="no">NO 🙈</button>
+  </div>
+
+  <div class="hint" id="hint">The “No” button is a little shy 😈</div>
+
+  <div class="result" id="result">
+    <h2 class="glow">SHE SAID YES!!! 🎉💘</h2>
+    <p>
+      You just made my world brighter 💫<br>
+      I promise lots of smiles, memories & love ❤️
+    </p>
+  </div>
+</div>
+
+<!-- Romantic Music -->
 <audio id="music" loop>
-<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4db1.mp3">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9e53f7c2d2.mp3" type="audio/mpeg">
 </audio>
 
-<div class="intro" id="intro">
-  <h2>A message has arrived 💌</h2>
-  <div class="envelope" onclick="openIntro()">✉️</div>
-</div>
-
-<div class="card" id="game">
-  <h2>Will you be my Valentine? 😍💞</h2>
-  <p>You can't say no 😈</p>
-  <div class="zone" id="zone">
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
-  </div>
-</div>
-
-<div class="royal" id="royal">
-  <div class="scroll">
-    <div class="crown">👑</div>
-    Hear ye, hear ye…<br>
-    The royal heart chooses only one.<br>
-    <span class="highlight">My Baby S ❤️</span><br>
-    is forever my Valentine.
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
 <script>
-const yes=document.getElementById("yesBtn");
-const no=document.getElementById("noBtn");
-const zone=document.getElementById("zone");
-const game=document.getElementById("game");
-const royal=document.getElementById("royal");
-const intro=document.getElementById("intro");
-const music=document.getElementById("music");
+/* Floating hearts */
+const hearts = ["💖","💗","💘","💕","❤️"];
+setInterval(()=>{
+  const h = document.createElement("div");
+  h.className="heart";
+  h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=4+Math.random()*4+"s";
+  h.style.fontSize=16+Math.random()*24+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},300);
 
-let scale=1;
+/* Confetti */
+const canvas = document.getElementById("confetti");
+const confetti = window.confetti.create(canvas,{resize:true,useWorker:true});
 
-function openIntro(){
- intro.style.display="none";
- game.style.display="block";
-}
+/* Buttons */
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+const zone = document.getElementById("zone");
+const result = document.getElementById("result");
+const hint = document.getElementById("hint");
+const music = document.getElementById("music");
 
-zone.addEventListener("pointermove",e=>{
- const r=no.getBoundingClientRect();
- const d=Math.hypot(r.x-e.clientX,r.y-e.clientY);
- if(d<120){
-  no.style.left=Math.random()*80+"%";
-  no.style.top=Math.random()*80+"%";
-  scale+=.1;
-  yes.style.transform=`scale(${scale})`;
- }
+let scale = 1;
+
+zone.addEventListener("mousemove", e=>{
+  const b=no.getBoundingClientRect();
+  const d=Math.hypot(
+    b.left+b.width/2-e.clientX,
+    b.top+b.height/2-e.clientY
+  );
+  if(d<140){
+    no.style.left=Math.random()*70+"%";
+    no.style.top=Math.random()*70+"%";
+    scale=Math.min(2.2,scale+.1);
+    yes.style.transform=`translateY(-50%) scale(${scale})`;
+  }
 });
 
 yes.onclick=()=>{
- game.style.display="none";
- royal.style.display="block";
- music.play();
- roses();
- fireworks();
+  zone.style.display="none";
+  hint.style.display="none";
+  result.style.display="block";
+  music.play();
+  confetti({particleCount:400,spread:160,origin:{y:.6}});
 };
-
-function roses(){
- setInterval(()=>{
-  const r=document.createElement("div");
-  r.className="rose";
-  r.innerHTML="🌹";
-  r.style.left=Math.random()*100+"vw";
-  document.body.appendChild(r);
-  setTimeout(()=>r.remove(),10000);
- },600);
-}
-
-function fireworks(){
- confetti({particleCount:200,spread:120,origin:{y:0.6}});
-}
-
-document.addEventListener("mousemove",e=>{
- const g=document.createElement("div");
- g.className="glitter";
- g.innerHTML="✨";
- g.style.left=e.clientX+"px";
- g.style.top=e.clientY+"px";
- document.body.appendChild(g);
- setTimeout(()=>g.remove(),1000);
-});
 </script>
 
 </body>
