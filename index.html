@@ -1,10 +1,9 @@
-😍💞💓<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Valentine Movie Trailer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
 body {
   margin:0;
@@ -29,8 +28,14 @@ body {
   animation:bounce 1.5s infinite;
 }
 
-@keyframes bounce { 50% { transform:translateY(-10px); } }
-@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+@keyframes bounce {
+  50% { transform:translateY(-10px); }
+}
+
+@keyframes fadeIn {
+  from {opacity:0;}
+  to {opacity:1;}
+}
 
 /* card */
 .card {
@@ -45,24 +50,32 @@ body {
   transform:scale(0.8);
   animation:cardPop 0.8s forwards;
 }
-@keyframes cardPop { to { transform:scale(1); } }
 
-.card h1 { font-size:32px; letter-spacing:2px; margin-bottom:15px; }
+@keyframes cardPop {
+  to { transform:scale(1); }
+}
+
+.card h1 {
+  font-size:32px;
+  letter-spacing:2px;
+  margin-bottom:15px;
+}
 
 .zone { position:relative; height:150px; margin-top:30px; }
 
 button {
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
   padding:16px 28px;
   font-size:20px;
   border-radius:999px;
   border:none;
   cursor:pointer;
   font-weight:bold;
-  transition: all 0.2s ease;
+  position:absolute;
+  transition: all 0.3s ease;
 }
+
+#yesBtn { background:#ff3b7a; color:white; left:25%; }
+#noBtn { background:#ddd; left:60%; }
 
 /* royal ending */
 .royal {
@@ -72,7 +85,11 @@ button {
   font-family:"Brush Script MT",cursive;
   color:#c4005a;
 }
-@keyframes zoom { from{opacity:0; transform:scale(0.8);} to{opacity:1; transform:scale(1);} }
+
+@keyframes zoom {
+  from{opacity:0; transform:scale(0.8);}
+  to{opacity:1; transform:scale(1);}
+}
 
 .scroll {
   background:linear-gradient(#fff8e7,#ffe9c9);
@@ -85,32 +102,66 @@ button {
   transform:rotateX(90deg);
   animation:scrollDrop 1s forwards;
 }
-@keyframes scrollDrop { to { transform:rotateX(0deg); } }
 
-.crown { font-size:70px; position:absolute; top:-250px; left:50%; transform:translateX(-50%); animation:crownDrop 2s forwards; }
-@keyframes crownDrop { to { top:-20px; } }
+@keyframes scrollDrop {
+  to { transform:rotateX(0deg); }
+}
 
-.highlight { color:#c4005a; font-size:40px; text-shadow:0 0 20px #ff66a3; animation:heartBeat 1.2s infinite; }
-@keyframes heartBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+.crown {
+  font-size:70px;
+  position:absolute;
+  top:-250px;
+  left:50%;
+  transform:translateX(-50%);
+  animation:crownDrop 2s forwards;
+}
+
+@keyframes crownDrop {
+  to { top:-20px; }
+}
+
+.highlight {
+  color:#c4005a;
+  font-size:40px;
+  text-shadow:0 0 20px #ff66a3;
+  animation:heartBeat 1.2s infinite;
+}
+
+@keyframes heartBeat {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
 
 /* handwriting effect */
-#loveLetter { font-size:28px; margin-top:20px; white-space:pre-wrap; min-height:120px; }
+#loveLetter {
+  font-size:28px;
+  margin-top:20px;
+  white-space:pre-wrap;
+  min-height:120px;
+}
 
 /* roses falling */
-.rose { position:fixed; top:-20px; font-size:28px; animation:fall 12s linear forwards; }
-@keyframes fall { to { transform:translateY(110vh) rotate(360deg); opacity:0; } }
+.rose {
+  position:fixed;
+  top:-20px;
+  font-size:28px;
+  animation:fall 12s linear forwards;
+}
+
+@keyframes fall {
+  to { transform:translateY(110vh) rotate(360deg); opacity:0; }
+}
 
 /* glitter */
-.glitter { position:fixed; pointer-events:none; font-size:16px; animation:fade 1s forwards; }
-@keyframes fade { to { opacity:0; transform:scale(2); } }
+.glitter {
+  position:fixed;
+  pointer-events:none;
+  font-size:16px;
+  animation:fade 1s forwards;
+}
 
-/* mobile responsiveness */
-@media screen and (max-width:400px){
-  .card { padding:25px; font-size:16px; }
-  .card h1 { font-size:24px; }
-  .zone button { padding:12px 20px; font-size:16px; }
-  .scroll { padding:30px; font-size:24px; }
-  #loveLetter { font-size:20px; }
+@keyframes fade {
+  to { opacity:0; transform:scale(2); }
 }
 </style>
 </head>
@@ -127,7 +178,7 @@ button {
 
 <div class="card" id="game">
   <h1>Will you be my Valentine? 😍💞</h1>
-  <p style="margin-bottom:20px;">You can't say no 😈</p>
+  <p style="font-size:18px; margin-bottom:20px;">You can't say no 😈</p>
 
   <div class="zone" id="zone">
     <button id="yesBtn">Yes</button>
@@ -144,8 +195,8 @@ button {
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script>
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
+const yes=document.getElementById("yesBtn");
+const no=document.getElementById("noBtn");
 const zone=document.getElementById("zone");
 const game=document.getElementById("game");
 const royal=document.getElementById("royal");
@@ -153,7 +204,9 @@ const intro=document.getElementById("intro");
 const music=document.getElementById("music");
 const loveLetter=document.getElementById("loveLetter");
 
-let yesScale=1;
+let scale=1;
+
+// Love letter content
 const message = `Hear ye, hear ye…
 The royal heart chooses only one.
 My Baby S ❤️
@@ -162,83 +215,68 @@ is forever my Valentine.`;
 function typeLetter(text, element, speed=60){
   let i=0;
   function typing(){
-    if(i<text.length){ element.textContent += text.charAt(i); i++; setTimeout(typing,speed); }
+    if(i<text.length){
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    }
   }
   typing();
 }
 
 function openIntro(){
-  intro.style.display="none";
-  game.style.display="block";
-  music.play();
+ intro.style.display="none";
+ game.style.display="block";
+ music.play();
 }
 
-// YES BUTTON grows slowly
-function growYes() {
-  yesScale = Math.min(2, yesScale + 0.03); // slow increment
-  yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
-}
-
-// NO BUTTON dodging
-function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-function moveNo(px,py){
-  const z=zone.getBoundingClientRect();
-  const b=noBtn.getBoundingClientRect();
-  let dx=(b.left+b.width/2)-px, dy=(b.top+b.height/2)-py, mag=Math.hypot(dx,dy)||1;
-  dx/=mag; dy/=mag;
-  let newLeft=clamp((b.left-z.left)+dx*150,0,z.width-b.width);
-  let newTop=clamp((b.top-z.top)+dy*150,0,z.height-b.height);
-  noBtn.style.left=newLeft+"px";
-  noBtn.style.top=newTop+"px";
-  noBtn.style.transform="none";
-  growYes();
-}
-
+// No button moves away
 zone.addEventListener("pointermove",e=>{
-  const b=noBtn.getBoundingClientRect();
-  const d=Math.hypot((b.left+b.width/2)-e.clientX,(b.top+b.height/2)-e.clientY);
-  if(d<140) moveNo(e.clientX,e.clientY);
+ const r=no.getBoundingClientRect();
+ const d=Math.hypot(r.x-e.clientX,r.y-e.clientY);
+ if(d<120){
+  no.style.left=Math.random()*80+"%";
+  no.style.top=Math.random()*80+"%";
+  scale+=.1;
+  yes.style.transform=`scale(${scale})`;
+ }
 });
 
-noBtn.addEventListener("click", e=>e.preventDefault());
+// Yes button triggers royal scroll + handwriting
+yes.onclick=()=>{
+ game.style.display="none";
+ royal.style.display="block";
+ roses();
+ fireworks();
+ typeLetter(message, loveLetter, 60);
+};
 
-// YES CLICK
-yesBtn.addEventListener("click",()=>{
-  zone.style.display="none";
-  game.querySelector("p").style.display="none"; // hide “You can't say no” text
-  royal.style.display="block";
-  typeLetter(message,loveLetter,60);
-  roses();
-  fireworks();
-  music.play();
-});
-
-// falling roses
+// Falling roses
 function roses(){
-  setInterval(()=>{
-    const r=document.createElement("div");
-    r.className="rose";
-    r.innerHTML="🌹";
-    r.style.left=Math.random()*100+"vw";
-    document.body.appendChild(r);
-    setTimeout(()=>r.remove(),12000);
-  },600);
+ setInterval(()=>{
+  const r=document.createElement("div");
+  r.className="rose";
+  r.innerHTML="🌹";
+  r.style.left=Math.random()*100+"vw";
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(),12000);
+ },600);
 }
 
-// fireworks
+// Fireworks confetti
 function fireworks(){
-  confetti({particleCount:300,spread:160,origin:{y:0.6}});
+ confetti({particleCount:300,spread:160,origin:{y:0.6}});
 }
 
-// glitter trail
+// Glitter trail
 document.addEventListener("mousemove",e=>{
-  const g=document.createElement("div");
-  g.className="glitter";
-  g.innerHTML="✨";
-  g.style.left=e.clientX+"px";
-  g.style.top=e.clientY+"px";
-  document.body.appendChild(g);
-  setTimeout(()=>g.remove(),1000);
+ const g=document.createElement("div");
+ g.className="glitter";
+ g.innerHTML="✨";
+ g.style.left=e.clientX+"px";
+ g.style.top=e.clientY+"px";
+ document.body.appendChild(g);
+ setTimeout(()=>g.remove(),1000);
 });
 </script>
 </body>
