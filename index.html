@@ -154,7 +154,7 @@ button {
 <canvas id="confetti"></canvas>
 
 <div class="card">
-  <h1>Nirali, will you be my Valentine? 💖</h1>
+  <h1>My Baby S💞💓, will you be my Valentine? 💖</h1>
 
   <div class="buttons" id="zone">
     <button id="yes">YES 💕</button>
@@ -205,19 +205,37 @@ const music = document.getElementById("music");
 
 let scale = 1;
 
-zone.addEventListener("mousemove", e=>{
-  const b=no.getBoundingClientRect();
-  const d=Math.hypot(
-    b.left+b.width/2-e.clientX,
-    b.top+b.height/2-e.clientY
-  );
-  if(d<140){
-    no.style.left=Math.random()*70+"%";
-    no.style.top=Math.random()*70+"%";
-    scale=Math.min(2.2,scale+.1);
-    yes.style.transform=`translateY(-50%) scale(${scale})`;
-  }
-});
+<script>
+let scale = 1;
+
+function escapeNoButton(e) {
+  const zoneRect = zone.getBoundingClientRect();
+  const btnRect = no.getBoundingClientRect();
+
+  const maxX = zoneRect.width - btnRect.width;
+  const maxY = zoneRect.height - btnRect.height;
+
+  // Random FAST jump
+  const newX = Math.random() * maxX;
+  const newY = Math.random() * maxY;
+
+  no.style.left = newX + "px";
+  no.style.top  = newY + "px";
+
+  // Yes button grows faster 😈
+  scale = Math.min(2.6, scale + 0.15);
+  yes.style.transform = `translateY(-50%) scale(${scale})`;
+}
+
+// Trigger earlier + faster
+zone.addEventListener("pointermove", escapeNoButton);
+zone.addEventListener("touchstart", escapeNoButton);
+zone.addEventListener("mousemove", escapeNoButton);
+
+// Block clicking NO
+no.addEventListener("click", e => e.preventDefault());
+</script>
+
 
 yes.onclick=()=>{
   zone.style.display="none";
