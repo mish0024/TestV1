@@ -132,14 +132,6 @@ button {
   50% { transform: scale(1.2); }
 }
 
-/* handwriting effect */
-#loveLetter {
-  font-size:28px;
-  margin-top:20px;
-  white-space:pre-wrap;
-  min-height:120px;
-}
-
 /* roses falling */
 .rose {
   position:fixed;
@@ -189,7 +181,10 @@ button {
 <div class="royal" id="royal">
   <div class="scroll">
     <div class="crown">👑</div>
-    <div id="loveLetter"></div>
+    Hear ye, hear ye…<br>
+    The royal heart chooses only one.<br>
+    <span class="highlight">My Baby S ❤️</span><br>
+    is forever my Valentine.
   </div>
 </div>
 
@@ -202,27 +197,8 @@ const game=document.getElementById("game");
 const royal=document.getElementById("royal");
 const intro=document.getElementById("intro");
 const music=document.getElementById("music");
-const loveLetter=document.getElementById("loveLetter");
 
 let scale=1;
-
-// Love letter content
-const message = `Hear ye, hear ye…
-The royal heart chooses only one.
-My Baby S ❤️
-is forever my Valentine.`;
-
-function typeLetter(text, element, speed=60){
-  let i=0;
-  function typing(){
-    if(i<text.length){
-      element.textContent += text.charAt(i);
-      i++;
-      setTimeout(typing, speed);
-    }
-  }
-  typing();
-}
 
 function openIntro(){
  intro.style.display="none";
@@ -230,7 +206,6 @@ function openIntro(){
  music.play();
 }
 
-// No button moves away
 zone.addEventListener("pointermove",e=>{
  const r=no.getBoundingClientRect();
  const d=Math.hypot(r.x-e.clientX,r.y-e.clientY);
@@ -242,16 +217,13 @@ zone.addEventListener("pointermove",e=>{
  }
 });
 
-// Yes button triggers royal scroll + handwriting
 yes.onclick=()=>{
  game.style.display="none";
  royal.style.display="block";
  roses();
  fireworks();
- typeLetter(message, loveLetter, 60);
 };
 
-// Falling roses
 function roses(){
  setInterval(()=>{
   const r=document.createElement("div");
@@ -263,12 +235,10 @@ function roses(){
  },600);
 }
 
-// Fireworks confetti
 function fireworks(){
  confetti({particleCount:300,spread:160,origin:{y:0.6}});
 }
 
-// Glitter trail
 document.addEventListener("mousemove",e=>{
  const g=document.createElement("div");
  g.className="glitter";
