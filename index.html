@@ -2,26 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Valentine Movie Trailer</title>
+<title>Valentine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body {
   margin:0;
   background: radial-gradient(circle,#ffd6e7,#ffeef6);
   overflow:hidden;
-  font-family: 'Brush Script MT', cursive;
+  font-family: system-ui, sans-serif;
   height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  perspective:1000px;
 }
 
 /* envelope intro */
+
 .intro {
   text-align:center;
-  animation:fadeIn 2s ease forwards;
 }
+
 .envelope {
   font-size:80px;
   cursor:pointer;
@@ -32,85 +33,62 @@ body {
   50% { transform:translateY(-10px); }
 }
 
-@keyframes fadeIn {
-  from {opacity:0;}
-  to {opacity:1;}
-}
-
 /* card */
+
 .card {
   display:none;
-  background:rgba(255,255,255,0.95);
-  padding:40px;
-  border-radius:25px;
+  background:white;
+  padding:30px;
+  border-radius:20px;
   text-align:center;
-  box-shadow:0 15px 60px rgba(0,0,0,.25);
+  box-shadow:0 15px 40px rgba(0,0,0,.15);
   width:90%;
-  max-width:550px;
-  transform:scale(0.8);
-  animation:cardPop 0.8s forwards;
+  max-width:500px;
 }
 
-@keyframes cardPop {
-  to { transform:scale(1); }
-}
-
-.card h1 {
-  font-size:32px;
-  letter-spacing:2px;
-  margin-bottom:15px;
-}
-
-.zone { position:relative; height:150px; margin-top:30px; }
+.zone { position:relative; height:150px; margin-top:20px; }
 
 button {
-  padding:16px 28px;
-  font-size:20px;
+  padding:14px 24px;
+  font-size:18px;
   border-radius:999px;
   border:none;
   cursor:pointer;
   font-weight:bold;
   position:absolute;
-  transition: all 0.3s ease;
 }
 
 #yesBtn { background:#ff3b7a; color:white; left:25%; }
 #noBtn { background:#ddd; left:60%; }
 
 /* royal ending */
+
 .royal {
   display:none;
   text-align:center;
   animation:zoom 3s ease forwards;
   font-family:"Brush Script MT",cursive;
-  color:#c4005a;
 }
 
 @keyframes zoom {
-  from{opacity:0; transform:scale(0.8);}
-  to{opacity:1; transform:scale(1);}
+  from{opacity:0;transform:scale(.8);}
+  to{opacity:1;transform:scale(1);}
 }
 
 .scroll {
   background:linear-gradient(#fff8e7,#ffe9c9);
-  padding:50px;
-  border-radius:25px;
-  box-shadow:0 0 80px gold;
-  font-size:32px;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 0 50px gold;
+  font-size:30px;
   color:#6b2d00;
   position:relative;
-  transform:rotateX(90deg);
-  animation:scrollDrop 1s forwards;
-}
-
-@keyframes scrollDrop {
-  to { transform:rotateX(0deg); }
 }
 
 .crown {
-  font-size:70px;
+  font-size:60px;
   position:absolute;
-  top:-250px;
+  top:-200px;
   left:50%;
   transform:translateX(-50%);
   animation:crownDrop 2s forwards;
@@ -122,33 +100,29 @@ button {
 
 .highlight {
   color:#c4005a;
-  font-size:40px;
-  text-shadow:0 0 20px #ff66a3;
-  animation:heartBeat 1.2s infinite;
+  font-size:36px;
+  text-shadow:0 0 15px #ff66a3;
 }
 
-@keyframes heartBeat {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
+/* roses slower */
 
-/* roses falling */
 .rose {
   position:fixed;
   top:-20px;
-  font-size:28px;
-  animation:fall 12s linear forwards;
+  font-size:26px;
+  animation:fall 10s linear forwards;
 }
 
 @keyframes fall {
-  to { transform:translateY(110vh) rotate(360deg); opacity:0; }
+  to { transform:translateY(110vh); opacity:0; }
 }
 
 /* glitter */
+
 .glitter {
   position:fixed;
   pointer-events:none;
-  font-size:16px;
+  font-size:14px;
   animation:fade 1s forwards;
 }
 
@@ -159,19 +133,19 @@ button {
 </head>
 
 <body>
+
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4db1.mp3">
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4db1.mp3">
 </audio>
 
 <div class="intro" id="intro">
-  <h2 style="font-size:28px; margin-bottom:20px;">A special message from your HUSBAND 💌</h2>
+  <h2>A message has arrived 💌</h2>
   <div class="envelope" onclick="openIntro()">✉️</div>
 </div>
 
 <div class="card" id="game">
-  <h1>Will you be my Valentine? 😍💞</h1>
-  <p style="font-size:18px; margin-bottom:20px;">You can't say no 😈</p>
-
+  <h2>Will you be my Valentine? 😍💞</h2>
+  <p>You can't say no 😈</p>
   <div class="zone" id="zone">
     <button id="yesBtn">Yes</button>
     <button id="noBtn">No</button>
@@ -189,6 +163,7 @@ button {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
 <script>
 const yes=document.getElementById("yesBtn");
 const no=document.getElementById("noBtn");
@@ -203,7 +178,6 @@ let scale=1;
 function openIntro(){
  intro.style.display="none";
  game.style.display="block";
- music.play();
 }
 
 zone.addEventListener("pointermove",e=>{
@@ -220,6 +194,7 @@ zone.addEventListener("pointermove",e=>{
 yes.onclick=()=>{
  game.style.display="none";
  royal.style.display="block";
+ music.play();
  roses();
  fireworks();
 };
@@ -231,12 +206,12 @@ function roses(){
   r.innerHTML="🌹";
   r.style.left=Math.random()*100+"vw";
   document.body.appendChild(r);
-  setTimeout(()=>r.remove(),12000);
+  setTimeout(()=>r.remove(),10000);
  },600);
 }
 
 function fireworks(){
- confetti({particleCount:300,spread:160,origin:{y:0.6}});
+ confetti({particleCount:200,spread:120,origin:{y:0.6}});
 }
 
 document.addEventListener("mousemove",e=>{
@@ -249,5 +224,6 @@ document.addEventListener("mousemove",e=>{
  setTimeout(()=>g.remove(),1000);
 });
 </script>
+
 </body>
 </html>
